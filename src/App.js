@@ -1,21 +1,27 @@
+import React from "react";
 import "./App.css";
 import CustomNavbar from "./components/CustomNavbar";
 import "./css/compiled/main.css";
 import CustomCard from "./components/Card";
 import { Container } from "react-bootstrap";
-import { getAllNotesFromLocalStorage } from "./components/NoteStorage";
+import {
+  getAllNotesFromLocalStorage,
+  getAllBucketsFromLocalStorage,
+} from "./components/NoteStorage";
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   const [notes, setNotes] = useState(getAllNotesFromLocalStorage());
-  console.log(notes);
-  const handleAddNote = (id, title, subtitle, content) => {
+  const [buckets, setBuckets] = useState(getAllBucketsFromLocalStorage());
+  const handleAddNote = (id, title, tags, subtitle, body) => {
     notes.push({
       id: id,
       title: title,
+      tags: tags,
       subtitle: subtitle,
-      content: content,
+      body: body,
     });
-    console.log("hey")
+    console.log("hey");
     setNotes([...notes]);
     localStorage.setItem("notes", JSON.stringify(notes));
   };
@@ -23,25 +29,58 @@ function App() {
     var idx = notes.indexOf(id);
     notes.splice(idx, 1);
     localStorage.setItem("notes", JSON.stringify(notes));
-    setNotes([...notes])
+    setNotes([...notes]);
   };
   console.log("render");
   return (
     <div className="App">
-      <CustomNavbar onAddNote={handleAddNote}></CustomNavbar>
-      <Container className="d-flex flex-row wrap">
-        {notes.map((elem) => {
-          return (
-            <CustomCard
-              id={elem.id}
-              title={elem.title}
-              subtitle={elem.subtitle}
-              body={elem.body}
-              onDeleteNote={handleDeleteNote}
-            ></CustomCard>
-          );
-        })}
-      </Container>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <React.Fragment>
+                <CustomNavbar
+                  onAddNote={handleAddNote}
+                  isBuckPage={false}
+                ></CustomNavbar>
+                <div className="container">
+                  <div className="row justify-content-left p-3">
+                    {notes.map((elem) => {
+                      return (
+                        <CustomCard
+                          id={elem.id}
+                          tags={elem.tags}
+                          title={elem.title}
+                          subtitle={elem.subtitle}
+                          body={elem.body}
+                          onDeleteNote={handleDeleteNote}
+                        ></CustomCard>
+                      );
+                    })}
+                  </div>
+                </div>
+              </React.Fragment>
+            }
+          ></Route>
+          <Route
+            path="/buckets"
+            element={
+              <React.Fragment>
+                <CustomNavbar
+                  onAddNote={handleAddNote}
+                  isBuckPage={true}
+                ></CustomNavbar>
+                <Container>
+                  {buckets.map((bucket) => {
+                    return;
+                  })}
+                </Container>
+              </React.Fragment>
+            }
+          ></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 export default class Note {
-  constructor(id, content, title, subtitle) {
+  constructor(id, body, title, subtitle) {
     this.id = id;
-    this.content = content;
+    this.body = body;
     this.title = title;
     this.subtitle = subtitle;
   }
@@ -11,7 +11,7 @@ export default class Note {
       id: this.id,
       title: this.title,
       subtitle: this.subtitle,
-      content: this.content,
+      body: this.body,
     });
     localStorage.setItem("notes", JSON.stringify(notes));
   }
@@ -29,4 +29,8 @@ export function getAllNotesFromLocalStorage(){
 export function getCurrentId(){
   const notes = JSON.parse(localStorage.getItem("notes")||"[]") || [];
   return notes.length+1;
+}
+export function getAllBucketsFromLocalStorage(){
+  const buckets = JSON.parse(localStorage.getItem("buckets")||"[]") || [];
+  return buckets;
 }

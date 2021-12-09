@@ -5,5 +5,6 @@ const sampleSubtitle="Subtitle goes here"
 export const sampleData={
     sampleTitle: sampleTitle,
     sampleDescription: sampleDescription,
-    sampleSubtitle: sampleSubtitle
+    sampleSubtitle: sampleSubtitle,
+    sampleTags:["#spaceSeparatedTags"]
 }

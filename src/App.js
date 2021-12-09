@@ -9,23 +9,23 @@ function App() {
   const [notes, setNotes] = useState(getAllNotesFromLocalStorage());
   console.log(notes);
   const handleAddNote = (id, title, subtitle, content) => {
-    const notes = JSON.parse(localStorage.getItem("notes") || "[]") || [];
     notes.push({
       id: id,
       title: title,
       subtitle: subtitle,
       content: content,
     });
-    setNotes(notes);
+    console.log("hey")
+    setNotes([...notes]);
     localStorage.setItem("notes", JSON.stringify(notes));
   };
   const handleDeleteNote = (id) => {
-    const notes = JSON.parse(localStorage.getItem("notes") || "[]") || [];
     var idx = notes.indexOf(id);
     notes.splice(idx, 1);
     localStorage.setItem("notes", JSON.stringify(notes));
-    setNotes(notes)
+    setNotes([...notes])
   };
+  console.log("render");
   return (
     <div className="App">
       <CustomNavbar onAddNote={handleAddNote}></CustomNavbar>
